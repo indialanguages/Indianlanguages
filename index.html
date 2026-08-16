@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>India's 121 Languages | Census 2011</title>
+
+<meta name="description"
+content="Explore India's 121 major language entries by reported mother-tongue speakers using Census of India 2011 data.">
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#fbfafc;
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  color:#28242f;
+}
+
+#india121-languages{
+  width:100%;
+  min-height:100vh;
+}
+
+#india121-languages *{
+  box-sizing:border-box;
+}
+
+.i121-wrap{
+  width:min(1200px,calc(100% - 24px));
+  margin:auto;
+  padding:30px 0 40px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.i121-header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.i121-flag-line{
+  width:110px;
+  height:5px;
+  margin:0 auto 18px;
+  border-radius:99px;
+
+  background:linear-gradient(
+    to bottom,
+    #ff9933 0 33.33%,
+    #fff 33.33% 66.66%,
+    #138808 66.66% 100%
+  );
+
+  border:1px solid rgba(40,36,47,.08);
+}
+
+.i121-title{
+  margin:0;
+  font-size:clamp(28px,5vw,50px);
+  line-height:1.08;
+  letter-spacing:-1.8px;
+  font-weight:850;
+  color:#30253d;
+}
+
+.i121-title span{
+  color:#6035b0;
+}
+
+.i121-subtitle{
+  max-width:780px;
+  margin:13px auto 18px;
+  color:#746e7e;
+  font-size:14px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   INFORMATION PILLS
+========================================================= */
+
+.i121-info{
+  max-width:900px;
+  margin:20px auto 22px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.i121-info-item{
+  position:relative;
+  flex:0 1 auto;
+  max-width:100%;
+  border:1px solid #ddd7e8;
+  border-radius:999px;
+  background:#fff;
+  color:#625c6e;
+  overflow:hidden;
+  box-shadow:0 3px 12px rgba(49,33,73,.05);
+}
+
+.i121-info-item::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:4px;
+  height:100%;
+
+  background:linear-gradient(
+    to bottom,
+    #ff9933 0 33.33%,
+    #fff 33.33% 66.66%,
+    #138808 66.66% 100%
+  );
+}
+
+.i121-info-item summary{
+  list-style:none;
+  cursor:pointer;
+  padding:11px 18px 11px 20px;
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+}
+
+.i121-info-item summary::-webkit-details-marker{
+  display:none;
+}
+
+.i121-info-item summary::after{
+  content:"＋";
+  margin-left:8px;
+  color:#6035b0;
+  font-size:13px;
+}
+
+.i121-info-item[open]{
+  border-color:#7042c3;
+  border-radius:16px;
+  width:min(100%,900px);
+}
+
+.i121-info-item[open] summary{
+  color:#5e35b1;
+  border-bottom:1px solid #eee9f3;
+}
+
+.i121-info-item[open] summary::after{
+  content:"−";
+}
+
+.i121-info-answer{
+  padding:16px 19px 18px;
+  color:#686270;
+  font-size:12px;
+  line-height:1.7;
+  text-align:left;
+  background:#fcfbfd;
+}
+
+.i121-info-answer strong{
+  color:#40354d;
+}
+
+.i121-info-answer em{
+  color:#5e35b1;
+}
+
+/* =========================================================
+   VIEW SWITCHER
+========================================================= */
+
+.i121-view-controls{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:4px auto 12px;
+}
+
+.i121-view-btn{
+  border:1px solid #ddd7e8;
+  background:#fff;
+  color:#625c6e;
+  border-radius:999px;
+  padding:9px 17px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.i121-view-btn:hover{
+  border-color:#7042c3;
+  color:#7042c3;
+}
+
+.i121-view-btn.active{
+  background:#6035b0;
+  border-color:#6035b0;
+  color:#fff;
+  box-shadow:0 5px 15px rgba(94,53,177,.2);
+}
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.i121-controls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:13px;
+}
+
+.i121-filter{
+  border:1px solid #ddd7e8;
+  background:#fff;
+  color:#625c6e;
+  border-radius:999px;
+  padding:9px 17px;
+  font-size:13px;
+  font-weight:750;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.i121-filter:hover{
+  border-color:#7042c3;
+  color:#7042c3;
+}
+
+.i121-filter.active{
+  background:#5e35b1;
+  color:#fff;
+  border-color:#5e35b1;
+  box-shadow:0 5px 15px rgba(94,53,177,.22);
+}
+
+.i121-filter.scheduled.active{
+  background:#ff9933;
+  border-color:#ff9933;
+}
+
+.i121-filter.unscheduled.active{
+  background:#138808;
+  border-color:#138808;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.i121-search{
+  width:min(330px,92%);
+  height:44px;
+  display:block;
+  margin:0 auto 18px;
+
+  border:1px solid #ddd7e8;
+  border-radius:999px;
+  padding:0 18px;
+
+  outline:none;
+  font-size:13px;
+  background:#fff;
+  color:#302b37;
+
+  box-shadow:0 3px 12px rgba(49,33,73,.04);
+}
+
+.i121-search:focus{
+  border-color:#7042c3;
+  box-shadow:0 0 0 4px rgba(112,66,195,.08);
+}
+
+/* =========================================================
+   MAIN CHART
+========================================================= */
+
+.i121-chart{
+  position:relative;
+  width:100%;
+  height:700px;
+  overflow:hidden;
+
+  border-radius:25px;
+  border:1px solid #e4dfea;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(224,210,249,.62),
+      rgba(246,242,251,.52) 35%,
+      #fbfafc 78%
+    );
+
+  box-shadow:0 18px 55px rgba(49,33,73,.09);
+
+  isolation:isolate;
+}
+
+.i121-chart::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:3px;
+  z-index:20;
+
+  background:linear-gradient(
+    to right,
+    #ff9933 0 33.33%,
+    #fff 33.33% 66.66%,
+    #138808 66.66% 100%
+  );
+}
+
+/* =========================================================
+   BUBBLES
+========================================================= */
+
+.i121-bubble-hit{
+  position:absolute;
+  padding:0;
+  margin:0;
+  border:0;
+  background:none;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+  z-index:2;
+  touch-action:manipulation;
+}
+
+.i121-bubble{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+
+  border:1.5px solid rgba(255,255,255,.9);
+
+  box-shadow:
+    0 5px 12px rgba(48,30,80,.13),
+    inset 0 1px 0 rgba(255,255,255,.5);
+
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease;
+}
+
+.i121-scheduled{
+  background:linear-gradient(
+    145deg,
+    #7545c7,
+    #4e2b94
+  );
+}
+
+.i121-unscheduled{
+  background:linear-gradient(
+    145deg,
+    #d9c9f1,
+    #bda5e3
+  );
+}
+
+.i121-bubble-hit:hover .i121-bubble,
+.i121-bubble-hit.selected .i121-bubble{
+  transform:scale(1.13);
+
+  box-shadow:
+    0 10px 24px rgba(62,36,105,.27),
+    0 0 0 3px #fff,
+    0 0 0 5px rgba(99,56,175,.3);
+}
+
+.i121-label{
+  color:#fff;
+  padding:3px;
+  font-size:10px;
+  line-height:1.08;
+  font-weight:800;
+  text-shadow:0 1px 3px rgba(0,0,0,.25);
+  pointer-events:none;
+}
+
+.i121-unscheduled .i121-label{
+  color:#38294d;
+  text-shadow:none;
+}
+
+/* =========================================================
+   INFORMATION CARD
+========================================================= */
+
+.i121-card{
+  position:absolute;
+  z-index:100;
+
+  width:310px;
+  max-width:calc(100% - 20px);
+
+  padding:18px;
+
+  border-radius:17px;
+
+  color:#fff;
+
+  background:rgba(29,25,38,.97);
+
+  box-shadow:0 20px 50px rgba(30,20,45,.32);
+
+  border:1px solid rgba(255,255,255,.1);
+
+  opacity:0;
+  pointer-events:none;
+
+  transform:translateY(5px) scale(.98);
+
+  transition:.15s ease;
+}
+
+.i121-card.show{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0) scale(1);
+}
+
+.i121-name{
+  font-size:20px;
+  line-height:1.15;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.i121-speakers{
+  color:#d9c8ff;
+  font-size:14px;
+  font-weight:800;
+}
+
+.i121-share{
+  color:#c8c1d0;
+  font-size:11px;
+  margin-top:3px;
+  margin-bottom:12px;
+}
+
+.i121-row{
+  border-top:1px solid rgba(255,255,255,.09);
+  padding:9px 0 2px;
+}
+
+.i121-label-small{
+  display:block;
+  color:#aaa2b5;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:9px;
+  font-weight:800;
+  margin-bottom:3px;
+}
+
+.i121-value{
+  color:#f8f5fa;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.i121-status{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.i121-status.s{
+  background:rgba(116,68,198,.32);
+  color:#e8dcff;
+}
+
+.i121-status.u{
+  background:rgba(205,188,227,.18);
+  color:#eee8f5;
+}
+
+/* =========================================================
+   RANKING VIEW
+========================================================= */
+
+.i121-ranking{
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  padding:24px 25px 35px;
+}
+
+.i121-ranking-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.i121-ranking-title{
+  margin:0;
+  font-size:21px;
+  color:#30253d;
+}
+
+.i121-ranking-description{
+  margin:4px 0 0;
+  font-size:11px;
+  color:#827b89;
+}
+
+.i121-ranking-count{
+  font-size:11px;
+  color:#817a89;
+  white-space:nowrap;
+}
+
+.i121-rank-row{
+  display:grid;
+  grid-template-columns:42px minmax(130px,180px) 1fr 105px;
+  gap:12px;
+  align-items:center;
+
+  padding:10px 0;
+
+  border-bottom:1px solid rgba(75,55,100,.07);
+  cursor:pointer;
+}
+
+.i121-rank-number{
+  font-size:12px;
+  font-weight:900;
+  color:#958d9e;
+  text-align:center;
+}
+
+.i121-rank-language{
+  min-width:0;
+}
+
+.i121-rank-name{
+  font-size:12px;
+  font-weight:800;
+  color:#3e3448;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.i121-rank-tag{
+  display:inline-block;
+  margin-top:4px;
+  padding:2px 6px;
+  border-radius:99px;
+  font-size:8px;
+  font-weight:800;
+}
+
+.i121-rank-tag.s{
+  background:#eee5ff;
+  color:#6035b0;
+}
+
+.i121-rank-tag.u{
+  background:#f0eaf5;
+  color:#766c80;
+}
+
+.i121-bar-wrap{
+  height:13px;
+  background:#eee9f3;
+  border-radius:99px;
+  overflow:hidden;
+}
+
+.i121-bar{
+  height:100%;
+  border-radius:99px;
+
+  background:linear-gradient(
+    90deg,
+    #7545c7,
+    #4e2b94
+  );
+
+  min-width:3px;
+}
+
+.i121-rank-value{
+  text-align:right;
+}
+
+.i121-rank-speakers{
+  font-size:12px;
+  font-weight:850;
+  color:#3e3448;
+}
+
+.i121-rank-percent{
+  font-size:9px;
+  color:#8a8391;
+  margin-top:2px;
+}
+
+/* =========================================================
+   FAMILY VIEW
+========================================================= */
+
+.i121-family-view{
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  padding:25px;
+}
+
+.i121-family-intro{
+  text-align:center;
+  max-width:700px;
+  margin:0 auto 22px;
+}
+
+.i121-family-title{
+  margin:0;
+  font-size:22px;
+  color:#30253d;
+}
+
+.i121-family-description{
+  margin:6px 0 0;
+  color:#817a89;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.i121-family-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+  max-width:900px;
+  margin:auto;
+}
+
+.i121-family-card{
+  background:rgba(255,255,255,.72);
+  border:1px solid #e4dfea;
+  border-radius:16px;
+  padding:16px;
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.i121-family-card:hover{
+  transform:translateY(-2px);
+  border-color:#c9b5e6;
+  box-shadow:0 10px 25px rgba(49,33,73,.07);
+}
+
+.i121-family-card.active{
+  border-color:#7042c3;
+  box-shadow:0 0 0 3px rgba(112,66,195,.08);
+}
+
+.i121-family-card.expanded{
+  grid-column:1 / -1;
+  cursor:default;
+}
+
+.i121-family-name{
+  font-size:14px;
+  font-weight:850;
+  color:#3d3248;
+}
+
+.i121-family-stats{
+  display:flex;
+  justify-content:space-between;
+  margin-top:7px;
+  font-size:10px;
+  color:#827b89;
+}
+
+.i121-family-total{
+  color:#6035b0;
+  font-weight:850;
+}
+
+.i121-family-bar{
+  height:8px;
+  margin-top:12px;
+  border-radius:99px;
+  background:#eee9f3;
+  overflow:hidden;
+}
+
+.i121-family-bar-fill{
+  height:100%;
+  border-radius:99px;
+  background:linear-gradient(90deg,#7545c7,#4e2b94);
+}
+
+.i121-family-details{
+  margin-top:18px;
+  padding-top:15px;
+  border-top:1px solid #e4dfea;
+  cursor:default;
+}
+
+.i121-detail-row{
+  margin-bottom:12px;
+}
+
+.i121-detail-row:last-child{
+  margin-bottom:0;
+}
+
+.i121-detail-label{
+  display:block;
+  color:#aaa2b5;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:9px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+
+.i121-detail-value{
+  color:#3d3248;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.i121-detail-languages{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.i121-lang-tag{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 10px;
+  border-radius:99px;
+  font-size:11px;
+  font-weight:700;
+  background:#f0eaf5;
+  color:#3d3248;
+}
+
+.i121-lang-tag.s{
+  background:#eee5ff;
+  color:#6035b0;
+}
+
+.i121-lang-count{
+  opacity:0.65;
+  margin-left:5px;
+  font-size:10px;
+}
+
+/* =========================================================
+   COUNT + LEGEND
+========================================================= */
+
+.i121-count{
+  position:absolute;
+  bottom:14px;
+  left:16px;
+  z-index:4;
+
+  font-size:10px;
+  color:#817a89;
+
+  background:rgba(255,255,255,.78);
+
+  border:1px solid #e1dce7;
+
+  padding:6px 9px;
+  border-radius:999px;
+}
+
+.i121-legend{
+  display:flex;
+  justify-content:center;
+  gap:22px;
+  margin:15px 0 8px;
+
+  font-size:12px;
+  font-weight:700;
+  color:#686270;
+}
+
+.i121-dot{
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  margin-right:6px;
+  vertical-align:-1px;
+}
+
+.i121-dot.s{
+  background:#6035b0;
+}
+
+.i121-dot.u{
+  background:#c8afe8;
+}
+
+/* =========================================================
+   SOURCE
+========================================================= */
+
+.i121-source{
+  max-width:800px;
+  margin:auto;
+  text-align:center;
+  color:#918b98;
+  font-size:10px;
+  line-height:1.6;
+}
+
+.i121-source strong{
+  color:#716a79;
+}
+
+.i121-tricolour-mini{
+  width:45px;
+  height:3px;
+  margin:10px auto 0;
+
+  background:linear-gradient(
+    to right,
+    #ff9933 0 33.33%,
+    #fff 33.33% 66.66%,
+    #138808 66.66% 100%
+  );
+
+  border:1px solid rgba(0,0,0,.06);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:760px){
+
+  .i121-wrap{
+    width:calc(100% - 14px);
+    padding-top:22px;
+  }
+
+  .i121-title{
+    letter-spacing:-1.1px;
+  }
+
+  .i121-subtitle{
+    font-size:13px;
+    padding:0 8px;
+  }
+
+  .i121-chart{
+    height:820px;
+    border-radius:20px;
+  }
+
+  .i121-label{
+    font-size:8px;
+  }
+
+  .i121-info{
+    flex-direction:column;
+    align-items:stretch;
+    padding:0 5px;
+  }
+
+  .i121-info-item{
+    width:100%;
+  }
+
+  .i121-info-item summary{
+    text-align:left;
+  }
+
+  .i121-info-item[open]{
+    width:100%;
+  }
+
+  .i121-ranking{
+    padding:20px 13px 30px;
+  }
+
+  .i121-rank-row{
+    grid-template-columns:29px minmax(100px,1fr) 1fr 80px;
+    gap:7px;
+  }
+
+  .i121-rank-name{
+    font-size:10px;
+  }
+
+  .i121-rank-speakers{
+    font-size:10px;
+  }
+
+  .i121-family-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:480px){
+
+  .i121-chart{
+    height:900px;
+  }
+
+  .i121-controls{
+    gap:6px;
+  }
+
+  .i121-filter,
+  .i121-view-btn{
+    padding:8px 12px;
+    font-size:11px;
+  }
+
+  .i121-legend{
+    gap:14px;
+  }
+
+  .i121-ranking-header{
+    display:block;
+  }
+
+  .i121-ranking-count{
+    display:block;
+    margin-top:5px;
+  }
+
+  .i121-rank-row{
+    grid-template-columns:25px minmax(90px,1fr) 1fr 72px;
+    gap:6px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="india121-languages">
+
+<div class="i121-wrap">
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<div class="i121-header">
+
+<div class="i121-flag-line"></div>
+
+<h1 class="i121-title">
+India’s <span>121 Languages</span>
+</h1>
+
+<div class="i121-subtitle">
+An interactive view of India's major language entries by
+reported mother-tongue speakers, based on the
+Census of India 2011.
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     INFORMATION PILLS
+====================================================== -->
+
+<div class="i121-info">
+
+<details class="i121-info-item">
+
+<summary>
+What are Scheduled and Unscheduled Languages?
+</summary>
+
+<div class="i121-info-answer">
+
+<strong>Scheduled Languages</strong> are the languages included
+in the <strong>Eighth Schedule of the Constitution of India</strong>.
+The Eighth Schedule currently contains 22 languages.
+
+<br><br>
+
+When the Constitution came into force in 1950, the Eighth Schedule
+contained <strong>14 languages</strong>.
+
+These were:
+
+<strong>
+Assamese, Bengali, Gujarati, Hindi, Kannada, Kashmiri,
+Malayalam, Marathi, Odia, Punjabi, Sanskrit, Tamil,
+Telugu and Urdu.
+</strong>
+
+<br><br>
+
+The list was subsequently expanded through Constitutional
+Amendments:
+
+<br><br>
+
+<strong>21st Constitutional Amendment, 1967</strong><br>
+Sindhi was added.
+
+<br><br>
+
+<strong>71st Constitutional Amendment, 1992</strong><br>
+Konkani, Manipuri and Nepali were added.
+
+<br><br>
+
+<strong>92nd Constitutional Amendment, 2003</strong><br>
+Bodo, Dogri, Maithili and Santali were added.
+
+<br><br>
+
+<strong>96th Constitutional Amendment, 2011</strong><br>
+The name "Oriya" was changed to "Odia".
+
+<br><br>
+
+This brought the Eighth Schedule to its present
+<strong>22 languages</strong>.
+
+<br><br>
+
+<strong>Unscheduled Languages</strong> in this visualization are
+mother-tongue entries recorded in the Census that are not among
+the 22 languages listed in the Eighth Schedule.
+
+<br><br>
+
+“Unscheduled” does <strong>not</strong> mean unofficial,
+unrecognized, or less important.
+
+</div>
+
+</details>
+
+
+<details class="i121-info-item">
+
+<summary>
+What is the source and methodology?
+</summary>
+
+<div class="i121-info-answer">
+
+The speaker figures are based on the
+<strong>Census of India 2011, Table C-16:
+Population by Mother Tongue</strong>, published by the
+Office of the Registrar General & Census Commissioner, India.
+
+<br><br>
+
+The figures represent people who reported the respective
+language as their <strong>mother tongue</strong> during the Census.
+
+<br><br>
+
+This visualization presents <strong>121 language entries</strong>
+from the Census data.
+
+The 22 languages identified as Scheduled correspond to the
+languages included in the Eighth Schedule of the Constitution.
+
+<br><br>
+
+The remaining entries are classified here as
+<strong>Unscheduled</strong> for the purpose of this
+visualization.
+
+<br><br>
+
+<strong>Bubble size</strong> represents the relative number of
+reported mother-tongue speakers.
+
+<br><br>
+
+<strong>Ranking and bar lengths</strong> use the same speaker
+figures and are ordered from the largest reported
+mother-tongue population to the smallest.
+
+<br><br>
+
+The language-family classification and principal-area information
+shown in the visualization are provided as contextual
+categorization and should not be interpreted as exclusive
+geographic boundaries.
+
+<br><br>
+
+<strong>Primary source:</strong><br>
+Census of India 2011 — Table C-16,
+Population by Mother Tongue.
+
+</div>
+
+</details>
+
+</div>
+
+
+<!-- =====================================================
+     VIEW SWITCHER
+====================================================== -->
+
+<div class="i121-view-controls">
+
+<button
+class="i121-view-btn active"
+data-view="bubbles"
+type="button">
+Bubbles
+</button>
+
+<button
+class="i121-view-btn"
+data-view="ranking"
+type="button">
+Rankings
+</button>
+
+<button
+class="i121-view-btn"
+data-view="families"
+type="button">
+Language Families
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     FILTERS
+====================================================== -->
+
+<div class="i121-controls">
+
+<button
+class="i121-filter active"
+data-filter="all"
+type="button">
+All 121
+</button>
+
+<button
+class="i121-filter scheduled"
+data-filter="scheduled"
+type="button">
+Scheduled
+</button>
+
+<button
+class="i121-filter unscheduled"
+data-filter="unscheduled"
+type="button">
+Unscheduled
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     SEARCH
+====================================================== -->
+
+<input
+class="i121-search"
+type="search"
+placeholder="Search a language or language family..."
+aria-label="Search a language or language family"
+>
+
+
+<!-- =====================================================
+     VISUALIZATION
+====================================================== -->
+
+<div class="i121-chart">
+
+<div class="i121-count"></div>
+
+<div class="i121-card"></div>
+
+</div>
+
+
+<!-- =====================================================
+     LEGEND
+====================================================== -->
+
+<div class="i121-legend">
+
+<span>
+<span class="i121-dot s"></span>
+Scheduled
+</span>
+
+<span>
+<span class="i121-dot u"></span>
+Unscheduled
+</span>
+
+</div>
+
+
+<!-- =====================================================
+     SOURCE
+====================================================== -->
+
+<div class="i121-source">
+
+<strong>Source: Census of India 2011.</strong>
+
+Speaker figures represent reported mother tongues.
+
+The visualization uses 121 language entries and distinguishes
+the 22 Eighth Schedule languages from other Census entries.
+
+<br>
+
+Principal areas shown in language details indicate areas associated
+with the language and are not exclusive distribution boundaries.
+
+<div class="i121-tricolour-mini"></div>
+
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+(function(){
+
+/* ==========================================================
+   DATA
+========================================================== */
+
+const DATA=[
+
+["Assamese",15311351,1,"Indo-Aryan","Assam"],
+["Bengali",97237669,1,"Indo-Aryan","West Bengal, Tripura, Assam"],
+["Bodo",1482929,1,"Tibeto-Burmese","Assam"],
+["Dogri",2596767,1,"Indo-Aryan","Jammu & Kashmir"],
+["Gujarati",55492554,1,"Indo-Aryan","Gujarat, Dadra & Nagar Haveli, Daman & Diu"],
+["Hindi",528347193,1,"Indo-Aryan","Uttar Pradesh, Bihar, Rajasthan, Madhya Pradesh, Haryana, Himachal Pradesh, Jharkhand, Chhattisgarh, Uttarakhand, Delhi"],
+["Kannada",43706512,1,"Dravidian","Karnataka, Maharashtra, Andhra Pradesh, Telangana"],
+["Kashmiri",6797587,1,"Indo-Aryan","Jammu & Kashmir"],
+["Konkani",2256502,1,"Indo-Aryan","Goa, Karnataka, Maharashtra, Kerala"],
+["Maithili",13583464,1,"Indo-Aryan","Bihar, Jharkhand"],
+["Malayalam",34838819,1,"Dravidian","Kerala, Lakshadweep"],
+["Manipuri",1761079,1,"Tibeto-Burmese","Manipur, Assam, Tripura"],
+["Marathi",83026680,1,"Indo-Aryan","Maharashtra, Goa, Karnataka, Madhya Pradesh"],
+["Nepali",2926168,1,"Indo-Aryan","West Bengal, Sikkim, Assam, Uttarakhand"],
+["Odia",37521324,1,"Indo-Aryan","Odisha, Jharkhand, Chhattisgarh, West Bengal"],
+["Punjabi",33124726,1,"Indo-Aryan","Punjab, Haryana, Delhi, Rajasthan, Jammu & Kashmir"],
+["Sanskrit",24821,1,"Indo-Aryan","Uttarakhand, Himachal Pradesh, Uttar Pradesh, Maharashtra"],
+["Santali",7368192,1,"Austro-Asiatic","Jharkhand, West Bengal, Odisha, Bihar"],
+["Sindhi",2772264,1,"Indo-Aryan","Maharashtra, Rajasthan, Gujarat, Madhya Pradesh"],
+["Tamil",69026881,1,"Dravidian","Tamil Nadu, Puducherry, Kerala, Karnataka"],
+["Telugu",81127740,1,"Dravidian","Andhra Pradesh, Telangana, Karnataka, Tamil Nadu"],
+["Urdu",50772631,1,"Indo-Aryan","Uttar Pradesh, Bihar, Telangana, Karnataka, Maharashtra, West Bengal, Delhi"],
+
+["Adi",248834,0,"Tibeto-Burmese","Arunachal Pradesh"],
+["Afghani/Kabuli/Pashto",21677,0,"Iranian","Jammu & Kashmir, Delhi, Maharashtra"],
+["Anal",27217,0,"Tibeto-Burmese","Manipur"],
+["Angami",152796,0,"Tibeto-Burmese","Nagaland, Manipur"],
+["Ao",260008,0,"Tibeto-Burmese","Nagaland"],
+["Arabic/Arbi",54947,0,"Semito-Hamitic","Kerala, Maharashtra, Karnataka, Tamil Nadu"],
+["Balti",13774,0,"Tibeto-Burmese","Jammu & Kashmir"],
+["Bhili/Bhilodi",10413637,0,"Indo-Aryan","Gujarat, Rajasthan, Madhya Pradesh, Maharashtra"],
+["Bhotia",229954,0,"Tibeto-Burmese","Uttarakhand, Sikkim, Himachal Pradesh"],
+["Bhumij",27506,0,"Austro-Asiatic","Jharkhand, West Bengal, Odisha"],
+["Bishnupuriya",79646,0,"Indo-Aryan","Assam, Manipur, Tripura"],
+["Chakhesang",19846,0,"Tibeto-Burmese","Nagaland"],
+["Chakru/Chokri",91216,0,"Tibeto-Burmese","Nagaland"],
+["Chang",66852,0,"Tibeto-Burmese","Nagaland"],
+["Coorgi/Kodagu",113857,0,"Dravidian","Karnataka, Kerala"],
+["Deori",32376,0,"Tibeto-Burmese","Assam, Arunachal Pradesh"],
+["Dimasa",137184,0,"Tibeto-Burmese","Assam, Nagaland"],
+["English",259678,0,"Germanic","Across India; major urban centres"],
+["Gadaba",40976,0,"Austro-Asiatic","Odisha, Andhra Pradesh"],
+["Gangte",16542,0,"Tibeto-Burmese","Manipur"],
+["Garo",1145323,0,"Tibeto-Burmese","Meghalaya, Assam"],
+["Gondi",2984453,0,"Dravidian","Madhya Pradesh, Maharashtra, Chhattisgarh, Telangana, Andhra Pradesh, Odisha"],
+["Halabi",766297,0,"Indo-Aryan","Chhattisgarh, Odisha, Maharashtra"],
+["Halam",38915,0,"Tibeto-Burmese","Tripura, Mizoram"],
+["Hmar",98988,0,"Tibeto-Burmese","Manipur, Mizoram, Assam"],
+["Ho",1421418,0,"Austro-Asiatic","Jharkhand, Odisha, West Bengal"],
+["Jatapu",20028,0,"Dravidian","Andhra Pradesh, Odisha"],
+["Juang",30378,0,"Austro-Asiatic","Odisha"],
+["Kabui",122931,0,"Tibeto-Burmese","Manipur, Assam, Nagaland"],
+["Karbi/Mikir",528503,0,"Tibeto-Burmese","Assam, Nagaland"],
+["Khandeshi",1860236,0,"Indo-Aryan","Maharashtra, Madhya Pradesh, Gujarat"],
+["Kharia",297614,0,"Austro-Asiatic","Jharkhand, Odisha, West Bengal"],
+["Khasi",1431344,0,"Austro-Asiatic","Meghalaya, Assam"],
+["Khezha",41625,0,"Tibeto-Burmese","Nagaland"],
+["Khiemnungan",61983,0,"Tibeto-Burmese","Nagaland"],
+["Khond/Kondh",155548,0,"Dravidian","Odisha, Andhra Pradesh, Telangana"],
+["Kinnauri",83561,0,"Tibeto-Burmese","Himachal Pradesh"],
+["Kisan",206100,0,"Dravidian","Odisha, Jharkhand, Chhattisgarh"],
+["Koch",36434,0,"Tibeto-Burmese","Assam, West Bengal, Meghalaya"],
+["Koda/Kora",47268,0,"Austro-Asiatic","West Bengal, Jharkhand, Odisha"],
+["Kolami",128451,0,"Dravidian","Maharashtra, Telangana"],
+["Kom",15108,0,"Tibeto-Burmese","Manipur"],
+["Konda",60699,0,"Dravidian","Andhra Pradesh, Odisha"],
+["Konyak",244477,0,"Tibeto-Burmese","Nagaland, Arunachal Pradesh"],
+["Korku",727133,0,"Austro-Asiatic","Madhya Pradesh, Maharashtra"],
+["Korwa",28453,0,"Austro-Asiatic","Jharkhand, Chhattisgarh"],
+["Koya",407423,0,"Dravidian","Telangana, Andhra Pradesh, Chhattisgarh, Odisha"],
+["Kui",941488,0,"Dravidian","Odisha"],
+["Kuki",83968,0,"Tibeto-Burmese","Manipur, Mizoram, Assam"],
+["Kurukh/Oraon",1988350,0,"Dravidian","Jharkhand, Chhattisgarh, Odisha, West Bengal"],
+["Ladakhi",14952,0,"Tibeto-Burmese","Ladakh"],
+["Lahauli",11574,0,"Tibeto-Burmese","Himachal Pradesh"],
+["Lahnda",108791,0,"Indo-Aryan","Punjab, Jammu & Kashmir"],
+["Lakher",42429,0,"Tibeto-Burmese","Mizoram"],
+["Lalung",33921,0,"Tibeto-Burmese","Assam, Meghalaya"],
+["Lepcha",47331,0,"Tibeto-Burmese","Sikkim, West Bengal"],
+["Liangmei",49811,0,"Tibeto-Burmese","Manipur, Nagaland, Assam"],
+["Limbu",40835,0,"Tibeto-Burmese","Sikkim, West Bengal"],
+["Lotha",179467,0,"Tibeto-Burmese","Nagaland"],
+["Lushai/Mizo",830846,0,"Tibeto-Burmese","Mizoram, Manipur"],
+["Malto",234991,0,"Dravidian","Jharkhand, West Bengal, Bihar"],
+["Mao",240205,0,"Tibeto-Burmese","Manipur, Nagaland"],
+["Maram",32460,0,"Tibeto-Burmese","Manipur"],
+["Maring",25814,0,"Tibeto-Burmese","Manipur"],
+["Miri/Mishing",629954,0,"Tibeto-Burmese","Assam, Arunachal Pradesh"],
+["Mishmi",44100,0,"Tibeto-Burmese","Arunachal Pradesh"],
+["Mogh",36665,0,"Tibeto-Burmese","Tripura"],
+["Monpa",13703,0,"Tibeto-Burmese","Arunachal Pradesh"],
+["Munda",505922,0,"Austro-Asiatic","Jharkhand, Odisha, West Bengal"],
+["Mundari",1128228,0,"Austro-Asiatic","Jharkhand, Odisha, West Bengal"],
+["Nicobarese",29099,0,"Austro-Asiatic","Andaman & Nicobar Islands"],
+["Nissi/Dafla",406532,0,"Tibeto-Burmese","Arunachal Pradesh, Assam"],
+["Nocte",30839,0,"Tibeto-Burmese","Arunachal Pradesh"],
+["Paite",79507,0,"Tibeto-Burmese","Manipur, Mizoram"],
+["Parji",52349,0,"Dravidian","Chhattisgarh, Odisha"],
+["Pawi",28639,0,"Tibeto-Burmese","Mizoram"],
+["Phom",54416,0,"Tibeto-Burmese","Nagaland"],
+["Pochury",21654,0,"Tibeto-Burmese","Nagaland"],
+["Rabha",139986,0,"Tibeto-Burmese","Assam, West Bengal, Meghalaya"],
+["Rai",15644,0,"Tibeto-Burmese","West Bengal, Sikkim"],
+["Rengma",65328,0,"Tibeto-Burmese","Nagaland, Assam"],
+["Sangtam",76000,0,"Tibeto-Burmese","Nagaland"],
+["Savara",409549,0,"Austro-Asiatic","Odisha, Andhra Pradesh"],
+["Sema",10802,0,"Tibeto-Burmese","Nagaland"],
+["Sherpa",16012,0,"Tibeto-Burmese","Sikkim, West Bengal"],
+["Shina",32247,0,"Indo-Aryan","Jammu & Kashmir, Ladakh"],
+["Tamang",20154,0,"Tibeto-Burmese","Sikkim, West Bengal"],
+["Tangkhul",187276,0,"Tibeto-Burmese","Manipur, Nagaland"],
+["Tangsa",38624,0,"Tibeto-Burmese","Arunachal Pradesh, Assam"],
+["Thado",229340,0,"Tibeto-Burmese","Manipur, Assam"],
+["Tibetan",182685,0,"Tibeto-Burmese","Ladakh, Himachal Pradesh, Sikkim, Arunachal Pradesh"],
+["Tripuri",1011294,0,"Tibeto-Burmese","Tripura"],
+["Tulu",1846427,0,"Dravidian","Karnataka, Kerala"],
+["Vaiphei",42748,0,"Tibeto-Burmese","Manipur, Mizoram"],
+["Wancho",59154,0,"Tibeto-Burmese","Arunachal Pradesh"],
+["Yimchungre",83259,0,"Tibeto-Burmese","Nagaland"],
+["Zeliang",63529,0,"Tibeto-Burmese","Nagaland, Manipur"],
+["Zemi",50925,0,"Tibeto-Burmese","Nagaland, Manipur"],
+["Zou",26545,0,"Tibeto-Burmese","Manipur, Mizoram"]
+
+].map(d=>({
+  language:d[0],
+  speakers:d[1],
+  scheduled:!!d[2],
+  family:d[3],
+  areas:d[4]
+}));
+
+
+/* ==========================================================
+   VALIDATION
+========================================================== */
+
+if(DATA.length!==121){
+  throw new Error("Expected exactly 121 language records.");
+}
+
+if(DATA.filter(d=>d.scheduled).length!==22){
+  throw new Error("Expected exactly 22 Scheduled Languages.");
+}
+
+
+/* ==========================================================
+   ELEMENTS & STATE
+========================================================== */
+
+const chart=document.querySelector(".i121-chart");
+const card=document.querySelector(".i121-card");
+const search=document.querySelector(".i121-search");
+const count=document.querySelector(".i121-count");
+
+const filters=document.querySelectorAll(".i121-filter");
+const viewButtons=document.querySelectorAll(".i121-view-btn");
+
+let filter="all";
+let view="bubbles";
+let active=null;
+let expandedFamily=null;
+
+const population=1210854977;
+
+const minLog=Math.log10(
+  Math.min(...DATA.map(d=>d.speakers))
+);
+
+const maxLog=Math.log10(
+  Math.max(...DATA.map(d=>d.speakers))
+);
+
+
+/* ==========================================================
+   FILTERING
+========================================================== */
+
+function filteredData(){
+
+  const q=search.value.trim().toLowerCase();
+
+  return DATA.filter(d=>{
+
+    const filterOK=
+      filter==="all" ||
+      (filter==="scheduled" && d.scheduled) ||
+      (filter==="unscheduled" && !d.scheduled);
+
+    const searchOK=
+      !q ||
+      d.language.toLowerCase().includes(q) ||
+      d.family.toLowerCase().includes(q);
+
+    return filterOK && searchOK;
+
+  });
+
+}
+
+
+/* ==========================================================
+   BUBBLE SIZE
+========================================================== */
+
+function radius(value){
+
+  const t=
+    (Math.log10(value)-minLog)/
+    (maxLog-minLog);
+
+  return 6+Math.pow(t,.72)*42;
+
+}
+
+
+/* ==========================================================
+   BUBBLE LAYOUT
+========================================================== */
+
+function layout(list,w,h){
+
+  const isMobile=w<700;
+
+  const GAP=isMobile?5:7;
+
+  const points=list
+    .slice()
+    .sort((a,b)=>b.speakers-a.speakers)
+    .map(d=>({
+      data:d,
+      r:radius(d.speakers),
+      x:w*.5,
+      y:h*.5
+    }));
+
+  points.forEach((p,i)=>{
+
+    const angle=
+      i*2.3999632297+
+      (i%3)*.08;
+
+    const radial=
+      Math.sqrt(i)*
+      (isMobile?29:25);
+
+    p.x=
+      w*.5+
+      Math.cos(angle)*radial;
+
+    p.y=
+      h*.46+
+      Math.sin(angle)*radial*.72;
+
+  });
+
+
+  for(let pass=0;pass<280;pass++){
+
+    let moved=false;
+
+    for(let i=0;i<points.length;i++){
+
+      const a=points[i];
+
+      for(let j=i+1;j<points.length;j++){
+
+        const b=points[j];
+
+        let dx=b.x-a.x;
+        let dy=b.y-a.y;
+
+        let dist=
+          Math.sqrt(dx*dx+dy*dy);
+
+        if(!dist){
+
+          dx=.01;
+          dy=.01;
+          dist=.014;
+
+        }
+
+        const minimum=
+          a.r+b.r+GAP;
+
+        if(dist<minimum){
+
+          const overlap=minimum-dist;
+
+          const nx=dx/dist;
+          const ny=dy/dist;
+
+          a.x-=nx*overlap*.51;
+          a.y-=ny*overlap*.51;
+
+          b.x+=nx*overlap*.51;
+          b.y+=ny*overlap*.51;
+
+          moved=true;
+
+        }
+
+      }
+
+    }
+
+
+    points.forEach(p=>{
+
+      const margin=p.r+8;
+
+      p.x=Math.max(
+        margin,
+        Math.min(w-margin,p.x)
+      );
+
+      p.y=Math.max(
+        margin,
+        Math.min(h-margin,p.y)
+      );
+
+    });
+
+
+    points.forEach(p=>{
+
+      p.x+=(w*.5-p.x)*.0008;
+      p.y+=(h*.46-p.y)*.0006;
+
+    });
+
+
+    if(!moved) break;
+
+  }
+
+
+  return points;
+
+}
+
+
+/* ==========================================================
+   SHOW LANGUAGE CARD
+========================================================== */
+
+function showInfo(d,x,y){
+
+  active=d.language;
+
+  const share=
+    (d.speakers/population*100).toFixed(2);
+
+  card.innerHTML=`
+
+    <div class="i121-name">
+      ${escapeHTML(d.language)}
+    </div>
+
+    <div class="i121-speakers">
+      ${formatIndian(d.speakers)} speakers
+    </div>
+
+    <div class="i121-share">
+      ${share}% of India's population
+    </div>
+
+    <div class="i121-row">
+
+      <span class="i121-label-small">
+        Classification
+      </span>
+
+      <span class="i121-status ${d.scheduled?"s":"u"}">
+        ${d.scheduled?"Scheduled":"Unscheduled"}
+      </span>
+
+    </div>
+
+    <div class="i121-row">
+
+      <span class="i121-label-small">
+        Language family
+      </span>
+
+      <span class="i121-value">
+        ${escapeHTML(d.family)}
+      </span>
+
+    </div>
+
+    <div class="i121-row">
+
+      <span class="i121-label-small">
+        Principal areas
+      </span>
+
+      <span class="i121-value">
+        ${escapeHTML(d.areas)}
+      </span>
+
+    </div>
+  `;
+
+
+  const cw=Math.min(
+    310,
+    chart.clientWidth-20
+  );
+
+  let left=x+18;
+
+  if(left+cw>chart.clientWidth-10){
+    left=x-cw-18;
+  }
+
+  if(left<10){
+    left=10;
+  }
+
+
+  let top=y-20;
+
+  const ch=Math.min(
+    390,
+    chart.clientHeight-20
+  );
+
+  if(top+ch>chart.clientHeight-10){
+    top=chart.clientHeight-ch-10;
+  }
+
+  if(top<10){
+    top=10;
+  }
+
+
+  card.style.left=left+"px";
+  card.style.top=top+"px";
+
+  card.classList.add("show");
+
+}
+
+
+/* ==========================================================
+   HIDE CARD
+========================================================== */
+
+function hideInfo(){
+
+  active=null;
+
+  card.classList.remove("show");
+
+}
+
+
+/* ==========================================================
+   BUBBLE VIEW
+========================================================== */
+
+function renderBubbles(list){
+
+  const positions=
+    layout(
+      list,
+      chart.clientWidth,
+      chart.clientHeight
+    );
+
+
+  positions.forEach(p=>{
+
+    const hitSize=
+      Math.max(
+        p.r*2+12,
+        32
+      );
+
+    const hit=
+      document.createElement("button");
+
+    hit.type="button";
+
+    hit.className=
+      "i121-bubble-hit";
+
+    hit.style.width=
+      hitSize+"px";
+
+    hit.style.height=
+      hitSize+"px";
+
+    hit.style.left=
+      p.x+"px";
+
+    hit.style.top=
+      p.y+"px";
+
+    hit.setAttribute(
+      "aria-label",
+      p.data.language+
+      ", "+
+      formatIndian(p.data.speakers)+
+      " speakers"
+    );
+
+
+    const bubble=
+      document.createElement("div");
+
+    bubble.className=
+      "i121-bubble "+
+      (
+        p.data.scheduled
+        ?"i121-scheduled"
+        :"i121-unscheduled"
+      );
+
+
+    bubble.style.width=
+      (p.r*2)+"px";
+
+    bubble.style.height=
+      (p.r*2)+"px";
+
+
+    if(p.r>=20){
+
+      const label=
+        document.createElement("span");
+
+      label.className=
+        "i121-label";
+
+      label.textContent=
+        p.data.language;
+
+      bubble.appendChild(label);
+
+    }
+
+
+    hit.appendChild(bubble);
+
+    chart.appendChild(hit);
+
+
+    hit.addEventListener(
+      "mouseenter",
+      ()=>{
+        if(
+          window.matchMedia("(hover:hover)").matches
+        ){
+          showInfo(
+            p.data,
+            p.x,
+            p.y
+          );
+        }
+      }
+    );
+
+
+    hit.addEventListener(
+      "focus",
+      ()=>{
+        showInfo(
+          p.data,
+          p.x,
+          p.y
+        );
+      }
+    );
+
+
+    hit.addEventListener(
+      "click",
+      e=>{
+
+        e.stopPropagation();
+
+        showInfo(
+          p.data,
+          p.x,
+          p.y
+        );
+
+      }
+    );
+
+
+    if(
+      active===p.data.language
+    ){
+
+      hit.classList.add("selected");
+
+    }
+
+  });
+
+}
+
+
+/* ==========================================================
+   RANKING VIEW
+========================================================== */
+
+function renderRanking(list){
+
+  const sorted=
+    list
+    .slice()
+    .sort(
+      (a,b)=>
+        b.speakers-a.speakers
+    );
+
+  const max=
+    sorted.length
+    ?sorted[0].speakers
+    :1;
+
+
+  const container=
+    document.createElement("div");
+
+  container.className=
+    "i121-ranking";
+
+
+  container.innerHTML=`
+
+    <div class="i121-ranking-header">
+
+      <div>
+
+        <h3 class="i121-ranking-title">
+          Language Ranking
+        </h3>
+
+        <p class="i121-ranking-description">
+          Ranked by reported mother-tongue speakers.
+        </p>
+
+      </div>
+
+      <div class="i121-ranking-count">
+        ${sorted.length} language${sorted.length===1?"":"s"}
+      </div>
+
+    </div>
+
+  `;
+
+
+  sorted.forEach((d,index)=>{
+
+    const percentage=
+      d.speakers/population*100;
+
+    const width=
+      d.speakers/max*100;
+
+
+    const row=
+      document.createElement("div");
+
+    row.className=
+      "i121-rank-row";
+
+
+    row.innerHTML=`
+
+      <div class="i121-rank-number">
+        ${index+1}
+      </div>
+
+      <div class="i121-rank-language">
+
+        <div class="i121-rank-name">
+          ${escapeHTML(d.language)}
+        </div>
+
+        <span class="i121-rank-tag ${d.scheduled?"s":"u"}">
+          ${d.scheduled?"Scheduled":"Unscheduled"}
+        </span>
+
+      </div>
+
+      <div class="i121-bar-wrap">
+
+        <div
+          class="i121-bar"
+          style="width:${width}%">
+        </div>
+
+      </div>
+
+      <div class="i121-rank-value">
+
+        <div class="i121-rank-speakers">
+          ${formatIndian(d.speakers)}
+        </div>
+
+        <div class="i121-rank-percent">
+          ${percentage.toFixed(2)}%
+        </div>
+
+      </div>
+
+    `;
+
+
+    row.addEventListener(
+      "click",
+      ()=>{
+        showInfo(
+          d,
+          chart.clientWidth*.5,
+          chart.clientHeight*.2
+        );
+      }
+    );
+
+
+    container.appendChild(row);
+
+  });
+
+
+  chart.appendChild(container);
+
+}
+
+
+/* ==========================================================
+   FAMILY VIEW
+========================================================== */
+
+function renderFamilies(list){
+
+  const groups={};
+
+
+  list.forEach(d=>{
+
+    if(!groups[d.family]){
+      groups[d.family]={
+        count:0,
+        speakers:0,
+        languages:[]
+      };
+    }
+
+    groups[d.family].count++;
+    groups[d.family].speakers+=d.speakers;
+    groups[d.family].languages.push(d);
+
+  });
+
+
+  const families=
+    Object.entries(groups)
+    .sort(
+      (a,b)=>
+        b[1].speakers-a[1].speakers
+    );
+
+
+  const maximum=
+    families.length
+    ?families[0][1].speakers
+    :1;
+
+
+  const container=
+    document.createElement("div");
+
+  container.className=
+    "i121-family-view";
+
+
+  container.innerHTML=`
+
+    <div class="i121-family-intro">
+
+      <h3 class="i121-family-title">
+        Language Families
+      </h3>
+
+      <p class="i121-family-description">
+        The 121 entries are grouped by broad language-family
+        classification. Click a family to expand and view its languages and regions.
+      </p>
+
+    </div>
+
+    <div class="i121-family-grid"></div>
+
+  `;
+
+
+  const grid=
+    container.querySelector(
+      ".i121-family-grid"
+    );
+
+
+  families.forEach(
+    ([family,data])=>{
+
+      const isExpanded = expandedFamily === family;
+
+      const card=
+        document.createElement("div");
+
+      card.className=
+        "i121-family-card" + (isExpanded ? " active expanded" : "");
+
+
+      const percentage=
+        data.speakers/population*100;
+
+      const width=
+        data.speakers/maximum*100;
+
+      const uniqueAreas = Array.from(
+        new Set(
+          data.languages.flatMap(l =>
+            l.areas.split(",").map(a => a.trim())
+          )
+        )
+      ).sort().join(", ");
+
+      const sortedLangs = data.languages
+        .slice()
+        .sort((a,b) => b.speakers - a.speakers);
+
+      const langsHTML = sortedLangs
+        .map(l => `
+          <span class="i121-lang-tag ${l.scheduled ? 's' : 'u'}">
+            ${escapeHTML(l.language)} <span class="i121-lang-count">(${formatIndian(l.speakers)})</span>
+          </span>
+        `).join("");
+
+      card.innerHTML=`
+
+        <div class="i121-family-name">
+          ${escapeHTML(family)}
+        </div>
+
+        <div class="i121-family-stats">
+
+          <span>
+            ${data.count} language${data.count===1?"":"s"}
+          </span>
+
+          <span class="i121-family-total">
+            ${formatIndian(data.speakers)}
+            speakers
+          </span>
+
+        </div>
+
+        <div class="i121-family-bar">
+
+          <div
+            class="i121-family-bar-fill"
+            style="width:${width}%">
+          </div>
+
+        </div>
+
+        <div class="i121-family-stats">
+
+          <span>
+            Share of India's population
+          </span>
+
+          <span>
+            ${percentage.toFixed(2)}%
+          </span>
+
+        </div>
+
+        ${isExpanded ? `
+          <div class="i121-family-details">
+            <div class="i121-detail-row">
+              <span class="i121-detail-label">Principal Regions</span>
+              <span class="i121-detail-value">${escapeHTML(uniqueAreas)}</span>
+            </div>
+            <div class="i121-detail-row">
+              <span class="i121-detail-label">Languages</span>
+              <div class="i121-detail-languages">
+                ${langsHTML}
+              </div>
+            </div>
+          </div>
+        ` : ''}
+
+      `;
+
+
+      card.addEventListener(
+        "click",
+        (e)=>{
+          if (e.target.closest(".i121-family-details")) return;
+          expandedFamily = (expandedFamily === family) ? null : family;
+          render();
+        }
+      );
+
+
+      grid.appendChild(card);
+
+    }
+  );
+
+
+  chart.appendChild(container);
+
+}
+
+
+/* ==========================================================
+   RENDER
+========================================================== */
+
+function render(){
+
+  hideInfo();
+
+  chart
+    .querySelectorAll(
+      ".i121-bubble-hit,\
+       .i121-ranking,\
+       .i121-family-view"
+    )
+    .forEach(
+      el=>el.remove()
+    );
+
+
+  const list=
+    filteredData();
+
+
+  count.textContent=
+    list.length+
+    " of 121 languages";
+
+
+  if(!list.length){
+
+    const empty=
+      document.createElement("div");
+
+    empty.style.cssText=
+      "position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#817a89;font-size:13px;";
+
+    empty.textContent=
+      "No languages found.";
+
+    chart.appendChild(empty);
+
+    return;
+
+  }
+
+
+  if(view==="bubbles"){
+
+    renderBubbles(list);
+
+  }
+  else if(view==="ranking"){
+
+    renderRanking(list);
+
+  }
+  else if(view==="families"){
+
+    renderFamilies(list);
+
+  }
+
+}
+
+
+/* ==========================================================
+   HELPERS
+========================================================== */
+
+function formatIndian(number){
+
+  return new Intl.NumberFormat(
+    "en-IN"
+  ).format(number);
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* ==========================================================
+   FILTER EVENTS
+========================================================== */
+
+filters.forEach(btn=>{
+
+  btn.addEventListener(
+    "click",
+    ()=>{
+
+      filters.forEach(
+        b=>b.classList.remove("active")
+      );
+
+      btn.classList.add("active");
+
+      filter=
+        btn.dataset.filter;
+
+      render();
+
+    }
+  );
+
+});
+
+
+/* ==========================================================
+   VIEW EVENTS
+========================================================== */
+
+viewButtons.forEach(btn=>{
+
+  btn.addEventListener(
+    "click",
+    ()=>{
+
+      viewButtons.forEach(
+        b=>b.classList.remove("active")
+      );
+
+      btn.classList.add("active");
+
+      view=
+        btn.dataset.view;
+
+      expandedFamily=null;
+
+      render();
+
+    }
+  );
+
+});
+
+
+/* ==========================================================
+   SEARCH
+========================================================== */
+
+search.addEventListener(
+  "input",
+  ()=>{
+    render();
+  }
+);
+
+
+/* ==========================================================
+   CLOSE CARD
+========================================================== */
+
+chart.addEventListener(
+  "click",
+  e=>{
+
+    if(
+      !e.target.closest(
+        ".i121-bubble-hit"
+      ) &&
+      !e.target.closest(
+        ".i121-card"
+      ) &&
+      !e.target.closest(
+        ".i121-rank-row"
+      )
+    ){
+
+      hideInfo();
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   RESIZE
+========================================================== */
+
+window.addEventListener(
+  "resize",
+  ()=>{
+
+    clearTimeout(
+      window.__i121Resize
+    );
+
+    window.__i121Resize=
+      setTimeout(
+        render,
+        120
+      );
+
+  }
+);
+
+
+/* ==========================================================
+   INITIAL RENDER
+========================================================== */
+
+render();
+
+})();
+
+</script>
+
+</body>
+</html>
