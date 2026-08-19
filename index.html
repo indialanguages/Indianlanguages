@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1748,6 +1748,62 @@ body{
 .i121-state-compare ~ .i121-state-table-wrap .i121-state-table th:nth-child(4),.i121-state-compare ~ .i121-state-table-wrap .i121-state-table th:nth-child(5){width:12%}
 .i121-state-compare ~ .i121-state-table-wrap .i121-state-table td,.i121-state-compare ~ .i121-state-table-wrap .i121-state-table th{padding:7px 6px}
 @media(max-width:650px){.i121-state-compare{grid-template-columns:1fr;max-width:none}.i121-state-matrix .i121-state-table{font-size:8px}}
+
+/* =========================================================
+   RANKING LANGUAGE GEOGRAPHY DETAIL
+========================================================= */
+.i121-ranking-row-active{
+  background:#f7f3fc;
+  border-radius:10px;
+  padding-left:8px;
+  padding-right:8px;
+}
+.i121-ranking-language-detail{
+  margin:4px 0 15px;
+  padding:18px;
+  border:1px solid #ded5ea;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 8px 24px rgba(49,33,73,.07);
+}
+.i121-ranking-detail-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+.i121-ranking-detail-title{margin:0;color:#30253d;font-size:19px}
+.i121-ranking-detail-sub{margin:4px 0 0;color:#817a89;font-size:9px;line-height:1.45}
+.i121-ranking-detail-close{
+  border:1px solid #ddd5e7;background:#fff;color:#70687a;border-radius:8px;
+  padding:6px 9px;font-size:9px;cursor:pointer;
+}
+.i121-ranking-detail-close:hover{border-color:#7545c7;color:#6035b0}
+.i121-ranking-detail-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-bottom:14px}
+.i121-ranking-detail-metric{background:#faf8fc;border:1px solid #ece6f2;border-radius:11px;padding:9px}
+.i121-ranking-detail-metric span{display:block;font-size:7px;text-transform:uppercase;letter-spacing:.5px;color:#817a89}
+.i121-ranking-detail-metric b{display:block;margin-top:4px;font-size:13px;color:#30253d}
+.i121-ranking-detail-section-title{margin:14px 0 8px;font-size:11px;color:#40354d}
+.i121-ranking-region-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-bottom:12px}
+.i121-ranking-region{border:1px solid #ece6f2;background:#faf8fc;border-radius:10px;padding:8px}
+.i121-ranking-region span{display:block;color:#817a89;font-size:7px;text-transform:uppercase}
+.i121-ranking-region b{display:block;color:#40354d;font-size:11px;margin-top:3px}
+.i121-ranking-state-table-wrap{overflow:auto;border:1px solid #e5deed;border-radius:11px}
+.i121-ranking-state-table{width:100%;border-collapse:collapse;min-width:760px}
+.i121-ranking-state-table th,.i121-ranking-state-table td{padding:8px 7px;border-bottom:1px solid #eee9f3;font-size:8px;text-align:left}
+.i121-ranking-state-table th{background:#f7f4fa;color:#746e7e;font-size:7px;text-transform:uppercase;letter-spacing:.45px}
+.i121-ranking-state-table tr:last-child td{border-bottom:0}
+.i121-ranking-state-table .num{text-align:right;font-variant-numeric:tabular-nums}
+.i121-ranking-state-meter{height:5px;background:#eee9f3;border-radius:99px;overflow:hidden;min-width:65px}
+.i121-ranking-state-meter>div{height:100%;background:linear-gradient(90deg,#7545c7,#4e2b94);border-radius:99px}
+.i121-ranking-state-region{color:#817a89}
+@media(max-width:760px){
+  .i121-ranking-detail-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i121-ranking-region-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i121-ranking-language-detail{padding:13px}
+}
+
 </style>
 </head>
 
@@ -2217,6 +2273,110 @@ function renderBubbles(list){
   });
 }
 
+function normalizeStateLanguageName(v){
+  return String(v||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+}
+
+function getLanguageStateBreakdown(languageName){
+  const target=normalizeStateLanguageName(languageName);
+  const rows=[];
+  Object.entries(STATE_C16||{}).forEach(([id,state])=>{
+    const lang=(state.languages||[]).find(x=>normalizeStateLanguageName(x.name)===target);
+    if(!lang) return;
+    rows.push({
+      id,
+      name:state.displayName||id,
+      region:state.region||"—",
+      population:Number(state.population)||0,
+      speakers:Number(lang.speakers)||0,
+      male:Number(lang.male)||0,
+      female:Number(lang.female)||0,
+      ruralCount:Number(lang.rural?.count)||0,
+      ruralPct:Number(lang.rural?.pct)||0,
+      urbanCount:Number(lang.urban?.count)||0,
+      urbanPct:Number(lang.urban?.pct)||0,
+      femalePer1000Male:lang.femalePer1000Male,
+      statePct:Number(lang.statePct)||0
+    });
+  });
+  rows.sort((a,b)=>b.speakers-a.speakers);
+  rows.forEach((r,i)=>r.rank=i+1);
+  return rows;
+}
+
+function renderRankingLanguageDetail(d){
+  const rows=getLanguageStateBreakdown(d.language);
+  const totalStates=rows.reduce((n,r)=>n+r.speakers,0);
+  const rural=rows.reduce((n,r)=>n+r.ruralCount,0);
+  const urban=rows.reduce((n,r)=>n+r.urbanCount,0);
+  const male=rows.reduce((n,r)=>n+r.male,0);
+  const female=rows.reduce((n,r)=>n+r.female,0);
+  const top=rows[0];
+  const regions={};
+  rows.forEach(r=>{
+    if(!regions[r.region]) regions[r.region]=0;
+    regions[r.region]+=r.speakers;
+  });
+  const regionRows=Object.entries(regions).sort((a,b)=>b[1]-a[1]);
+  const ruralPct=totalStates?100*rural/totalStates:0;
+  const urbanPct=totalStates?100*urban/totalStates:0;
+  const sexRatio=male?1000*female/male:0;
+  const stateTotal=d.speakers||totalStates;
+  const topShare=stateTotal?100*top?.speakers/stateTotal:0;
+  const el=document.createElement("div");
+  el.className="i121-ranking-language-detail";
+  el.innerHTML=`
+    <div class="i121-ranking-detail-head">
+      <div>
+        <h3 class="i121-ranking-detail-title">${escapeHTML(d.language)} — State & Regional Distribution</h3>
+        <p class="i121-ranking-detail-sub">How speakers of this language are distributed across the States & UTs in the supplied Census 2011 C-16 state extract.</p>
+      </div>
+      <button type="button" class="i121-ranking-detail-close">Close</button>
+    </div>
+    <div class="i121-ranking-detail-metrics">
+      <div class="i121-ranking-detail-metric"><span>India speakers</span><b>${formatIndian(d.speakers)}</b></div>
+      <div class="i121-ranking-detail-metric"><span>States / UTs recorded</span><b>${rows.length}</b></div>
+      <div class="i121-ranking-detail-metric"><span>Top State / UT</span><b>${top?escapeHTML(top.name):"—"}</b></div>
+      <div class="i121-ranking-detail-metric"><span>Rural</span><b>${formatIndian(rural)} · ${ruralPct.toFixed(2)}%</b></div>
+      <div class="i121-ranking-detail-metric"><span>Urban</span><b>${formatIndian(urban)} · ${urbanPct.toFixed(2)}%</b></div>
+      <div class="i121-ranking-detail-metric"><span>Female / 1,000 male</span><b>${sexRatio?sexRatio.toFixed(1):"—"}</b></div>
+    </div>
+    <div class="i121-ranking-detail-section-title">Regional distribution</div>
+    <div class="i121-ranking-region-grid">
+      ${regionRows.map(([name,n])=>`<div class="i121-ranking-region"><span>${escapeHTML(name)}</span><b>${formatIndian(n)}</b></div>`).join("")}
+    </div>
+    <div class="i121-ranking-detail-section-title">State / UT ranking by speaker count</div>
+    <div class="i121-ranking-state-table-wrap">
+      <table class="i121-ranking-state-table">
+        <thead><tr>
+          <th>#</th><th>State / UT</th><th>Region</th><th>Speakers</th><th>% of language speakers</th><th>% of state population</th><th>Rural</th><th>Urban</th><th>Female / 1,000 male</th>
+        </tr></thead>
+        <tbody>
+          ${rows.map(r=>{
+            const share=stateTotal?100*r.speakers/stateTotal:0;
+            return `<tr>
+              <td class="num">${r.rank}</td>
+              <td><b>${escapeHTML(r.name)}</b></td>
+              <td class="i121-ranking-state-region">${escapeHTML(r.region)}</td>
+              <td class="num"><b>${formatIndian(r.speakers)}</b></td>
+              <td><div>${share.toFixed(2)}%</div><div class="i121-ranking-state-meter"><div style="width:${Math.min(100,share)}%"></div></div></td>
+              <td class="num">${r.statePct.toFixed(2)}%</td>
+              <td class="num">${formatIndian(r.ruralCount)}<br><span class="i121-ranking-state-region">${r.ruralPct.toFixed(1)}%</span></td>
+              <td class="num">${formatIndian(r.urbanCount)}<br><span class="i121-ranking-state-region">${r.urbanPct.toFixed(1)}%</span></td>
+              <td class="num">${r.femalePer1000Male==null?"—":Number(r.femalePer1000Male).toFixed(1)}</td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+  el.querySelector(".i121-ranking-detail-close").addEventListener("click",()=>{
+    el.remove();
+    document.querySelectorAll(".i121-rank-row-active").forEach(x=>x.classList.remove("i121-rank-row-active"));
+  });
+  return el;
+}
+
 function renderRanking(list){
   const sorted=list.slice().sort((a,b)=>b.speakers-a.speakers);
   const max=sorted.length?sorted[0].speakers:1;
@@ -2227,12 +2387,13 @@ function renderRanking(list){
     <div class="i121-ranking-header">
       <div>
         <h3 class="i121-ranking-title">Language Ranking</h3>
-        <p class="i121-ranking-description">Ranked by reported mother-tongue speakers.</p>
+        <p class="i121-ranking-description">Ranked by reported mother-tongue speakers. Click a language to explore its State/UT distribution.</p>
       </div>
       <div class="i121-ranking-count">${sorted.length} language${sorted.length===1?"":"s"}</div>
     </div>
   `;
 
+  let expandedLanguage=null;
   sorted.forEach((d,index)=>{
     const percentage=d.speakers/population*100;
     const width=d.speakers/max*100;
@@ -2250,11 +2411,32 @@ function renderRanking(list){
         <div class="i121-rank-percent">${percentage.toFixed(2)}%</div>
       </div>
     `;
-    row.addEventListener("click", ()=>showInfo(d,chart.clientWidth*.5,chart.clientHeight*.2));
+    row.setAttribute("role","button");
+    row.setAttribute("tabindex","0");
+    const open=()=>{
+      if(expandedLanguage===d.language){
+        const old=container.querySelector(".i121-ranking-language-detail");
+        if(old) old.remove();
+        row.classList.remove("i121-rank-row-active");
+        expandedLanguage=null;
+        return;
+      }
+      const old=container.querySelector(".i121-ranking-language-detail");
+      if(old) old.remove();
+      container.querySelectorAll(".i121-rank-row-active").forEach(x=>x.classList.remove("i121-rank-row-active"));
+      expandedLanguage=d.language;
+      row.classList.add("i121-rank-row-active");
+      const detail=renderRankingLanguageDetail(d);
+      row.after(detail);
+      requestAnimationFrame(()=>detail.scrollIntoView({behavior:"smooth",block:"nearest"}));
+    };
+    row.addEventListener("click",open);
+    row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
     container.appendChild(row);
   });
   chart.appendChild(container);
 }
+
 
 function renderFamilies(list){
   const groups={};
