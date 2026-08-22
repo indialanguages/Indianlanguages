@@ -1805,6 +1805,9 @@ body{
 }
 
 </style>
+<style id="i121-quiz-css">
+.i121-quiz{width:100%;max-width:900px;margin:0 auto;padding:10px 0 30px}.i121-quiz-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px}.i121-quiz-title{font-size:22px;font-weight:800}.i121-quiz-sub{font-size:13px;color:#817a89;margin-top:4px}.i121-quiz-card{border:1px solid #e5e0e8;border-radius:16px;padding:20px;background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.05)}.i121-quiz-controls{display:flex;gap:8px;flex-wrap:wrap}.i121-quiz-btn{border:1px solid #d9d3df;background:#fff;color:inherit;border-radius:10px;padding:9px 13px;cursor:pointer;font:inherit}.i121-quiz-btn.active{background:#18151d;color:#fff;border-color:#18151d}.i121-quiz-progress{height:7px;background:#eee9f0;border-radius:99px;overflow:hidden;margin-bottom:18px}.i121-quiz-progress>span{display:block;height:100%;background:#18151d;border-radius:99px}.i121-quiz-q{font-size:19px;font-weight:750;line-height:1.45;margin-bottom:18px}.i121-quiz-options{display:grid;gap:10px}.i121-quiz-option{width:100%;text-align:left;border:1px solid #ddd7e1;background:#fff;color:inherit;border-radius:11px;padding:12px 14px;cursor:pointer;font:inherit}.i121-quiz-option:hover{border-color:#aaa1af;background:#faf8fb}.i121-quiz-option.correct{border-color:#438a5a;background:#eef8f0}.i121-quiz-option.wrong{border-color:#c85a5a;background:#fff0f0}.i121-quiz-feedback{margin-top:15px;padding:12px;border-radius:10px;background:#f6f3f7;font-size:13px;line-height:1.5}.i121-quiz-next{margin-top:16px}.i121-quiz-result{text-align:center;padding:25px 10px}.i121-quiz-score{font-size:42px;font-weight:850;margin:8px 0}.i121-quiz-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}.i121-quiz-note{font-size:12px;color:#817a89;margin-top:12px;text-align:center}.i121-quiz-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.i121-quiz-chip{font-size:11px;border:1px solid #ddd7e1;border-radius:999px;padding:5px 8px;color:#655f6c;background:#faf9fb}
+</style>
 </head>
 
 <body>
@@ -1863,6 +1866,7 @@ Bubble sizes, rankings, and comparisons use the reported mother-tongue speaker c
 <button class="i121-view-btn active" data-view="bubbles" type="button">Bubbles</button>
 <button class="i121-view-btn" data-view="ranking" type="button">Rankings</button>
 <button class="i121-view-btn" data-view="families" type="button">Language Families</button>
+      <button class="i121-view-btn" data-view="quiz" type="button">Quiz</button>
 <button class="i121-view-btn" data-view="state" type="button">State &amp; UT Demographics</button>
 <button class="i121-view-btn" data-view="compare" type="button">Compare (up to 3)</button>
 </div>
@@ -1917,6 +1921,8 @@ aria-label="Search a language, family, or region"
 
 </div>
 </div>
+
+<script src="quiz.js"></script>
 
 <script>
 (function(){
@@ -2782,11 +2788,25 @@ function renderStateExplorer(){
 function render(){
   hideInfo();
   chart.classList.toggle("i121-scroll-mode", view !== "bubbles");
-  chart.querySelectorAll(".i121-bubble-hit, .i121-ranking, .i121-family-view, .i121-compare-view, .i121-state-view, .i121-state-view-host").forEach(el=>el.remove());
+  chart.querySelectorAll(".i121-bubble-hit, .i121-ranking, .i121-family-view, .i121-compare-view, .i121-state-view, .i121-state-view-host, .i121-quiz").forEach(el=>el.remove());
   // Remove any orphaned state/ranking layers from previous renders.
   chart.querySelectorAll('[class*="i121-state"], [class*="i121-ranking"]').forEach(el=>{
     if(el !== chart && !el.closest('.tooltip')) el.remove();
   });
+
+  if (view === "quiz") {
+    filtersWrap.style.display = "none";
+    search.style.display = "none";
+    count.style.display = "none";
+
+    if (typeof window.renderQuizHome === "function") {
+      window.renderQuizHome();
+    } else {
+      chart.innerHTML = '<div class="i121-quiz"><div class="i121-quiz-card i121-quiz-result"><div class="i121-quiz-title">Quiz is loading…</div></div></div>';
+    }
+
+    return;
+  }
 
   if (view === "state") {
     filtersWrap.style.display = "none";
@@ -2882,8 +2902,12 @@ window.addEventListener("resize", ()=>{
 
 render();
 
+window.I121_DATA=DATA;
+window.I121_STATE_C16=STATE_C16;
+
 })();
 </script>
+
 
 </body>
 </html>
